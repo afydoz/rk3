@@ -1,37 +1,58 @@
-%Start A B C D E F
-%{
-	#include <stdio.h>
-	char* mas[]={"Correct", "Incorrect" , "No"}; 
-%}
+%option noyywrap
+%START Q1 Q2 Q3 Q4 Q5 Q6 ER
 %%
-     BEGIN B;
-<A>0 BEGIN B;
-<A>1 BEGIN C;
-<B>0 BEGIN A;
-<B>1 BEGIN D;
-<C>0 BEGIN D;
-<C>1 BEGIN E;
-<D>0 BEGIN C;
-<D>1 BEGIN F;
-<E>0 BEGIN F;
-<E>1 BEGIN A;
-<F>0 BEGIN E;
-<F>1 BEGIN B;
+<Q1>[ \n\t] {
+    puts("Q1 CORRECT");
+    BEGIN 0 ;
+}
+<Q1>[^01\ \n\t] BEGIN ER ;
+<Q1>1 {printf("Q1_1\n"); BEGIN Q5;}
+<Q1>0 {printf("Q1_0\n"); BEGIN Q1;}
 
-[A-z2-9]+\n {printf("Error!!!\n"); return 2;}
-<A>\n {printf("Success!\n"); return 0;}
-<B>\n {printf("Error in B!\n"); return 1;}
-<C>\n {printf("Error in C!\n"); return 1;}
-<D>\n {printf("Error in D!\n"); return 1;}
-<E>\n {printf("Error in E!\n"); return 1;}
-<F>\n {printf("Error in F!\n"); return 1;}
-
-%%
-
-int main()
-{
-	int ret=yylex();
-	printf("%s bin set.\n", mas[ret]);
-	return(ret);
+<Q2>[ \n\t] {
+    puts("Q2 INCORRECT");
+    BEGIN 1 ;
 }
 
+<Q2>1 {printf("Q2_1\n"); BEGIN Q3;}
+<Q2>0 {printf("Q2_0\n"); BEGIN Q1;}
+
+<Q3>[ \n\t] {
+    puts("Q3 INCORRECT");
+    BEGIN 1 ;
+}
+<Q3>1 {printf("Q3_1\n"); BEGIN Q4;} 
+<Q3>0 {printf("Q3_0\n"); BEGIN Q5;}
+
+<Q4>[ \n\t] {
+    puts("Q4 INCORRECT");
+    BEGIN 1 ;
+}
+<Q4>1 {printf("Q4_1\n"); BEGIN Q1;}
+<Q4>0 {printf("Q4_0\n"); BEGIN Q6;}
+
+<Q5>[ \n\t] {
+    puts("Q5 INCORRECT");
+    BEGIN 1;
+}
+<Q5>1 {printf("Q5_1\n"); BEGIN Q6;}
+<Q5>0 {printf("Q5_0\n"); BEGIN Q3;}
+
+<Q6>[ \n\t] {
+    puts("Q6 INCORRECT");
+    BEGIN 1;
+}
+<Q6>1 {printf("Q6_1\n"); BEGIN Q1;}
+<Q6>0 {printf("Q6_0\n"); BEGIN Q4;}
+
+<ER>[^\ \t\n] BEGIN ER;
+
+1	{printf("1_1\n"); BEGIN Q5;}
+0	{printf("0_0\n"); BEGIN Q1;}
+\n	puts("n INCORRECT");
+.		;
+%% 
+int main()
+{
+ return(yylex());
+}
