@@ -1,0 +1,81 @@
+%{
+#include <stdio.h>
+char * mes[]={"Correct","Incorrect"};
+%}
+
+%Start ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE
+
+%%
+ BEGIN ONE;
+<ONE>1 ;
+<ONE>2 BEGIN TWO;
+<ONE>3 BEGIN THREE;
+<ONE>4 BEGIN FOUR;
+<ONE>5 BEGIN FIVE;
+<ONE>6 BEGIN SIX;
+<ONE>7 BEGIN SEVEN;
+<ONE>8 BEGIN EIGHT;
+<ONE>9 BEGIN NINE;
+<ONE>\n return(0);
+
+<TWO>2;
+<TWO>3 BEGIN THREE;
+<TWO>4 BEGIN FOUR;
+<TWO>5 BEGIN FIVE;
+<TWO>6 BEGIN SIX;
+<TWO>7 BEGIN SEVEN;
+<TWO>8 BEGIN EIGHT;
+<TWO>9 BEGIN NINE;
+<TWO>\n return(0);
+
+<THREE>3;
+<THREE>4 BEGIN FOUR;
+<THREE>5 BEGIN FIVE;
+<THREE>6 BEGIN SIX;
+<THREE>7 BEGIN SEVEN;
+<THREE>8 BEGIN EIGHT;
+<THREE>9 BEGIN NINE;
+<THREE>\n return(0);
+
+<FOUR>4;
+<FOUR>5 BEGIN FIVE;
+<FOUR>6 BEGIN SIX;
+<FOUR>7 BEGIN SEVEN;
+<FOUR>8 BEGIN EIGHT;
+<FOUR>9 BEGIN NINE;
+<FOUR>\n return(0);
+
+<FIVE>5; 
+<FIVE>6 BEGIN SIX;
+<FIVE>7 BEGIN SEVEN;
+<FIVE>8 BEGIN EIGHT;
+<FIVE>9 BEGIN NINE;
+<FIVE>\n return(0);
+
+<SIX>6;
+<SIX>7 BEGIN SEVEN;
+<SIX>8 BEGIN EIGHT;
+<SIX>9 BEGIN NINE;
+<SIX>\n return(0);
+
+<SEVEN>7;
+<SEVEN>8 BEGIN EIGHT;
+<SEVEN>9 BEGIN NINE;
+<SEVEN>\n return(0);
+
+<EIGHT>8;
+<EIGHT>9 BEGIN NINE;
+<EIGHT>\n return(0);
+
+<NINE>9;
+<NINE>\n return(0);
+
+.|\n return(1);
+
+
+%%
+int main(int argc, char* argv[]) {
+	int ret = yylex();
+	printf("%s\n", mes[ret]);
+	return(ret);
+}
